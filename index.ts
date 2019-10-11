@@ -2,7 +2,7 @@ const w : number = window.innerWidth
 const h : number = window.innerHeight
 const scGap : number = 0.02
 const sizeFactor : number = 2.9
-const foreColor : string = "673AB7"
+const foreColor : string = "#673AB7"
 const backColor : string = "#BDBDBD"
 const nodes : number = 5
 const delay : number = 20
@@ -73,8 +73,8 @@ class DrawingUtil {
         const size : number = gap / sizeFactor
         context.fillStyle = foreColor
         context.save()
-        context.translate(0, h * (i + 1))
-        DrawingUtil.drawPyramids(context, i, w, size, scale)
+        context.translate(0, gap * (i + 1))
+        DrawingUtil.drawPyramids(context, i + 1, w, size, scale)
         context.restore()
     }
 }
@@ -87,6 +87,7 @@ class State {
 
     update(cb : Function) {
         this.scale += this.dir * scGap
+        console.log(this.scale)
         if (Math.abs(this.scale - this.prevScale) > 1) {
             this.scale = this.prevScale + this.dir
             this.prevScale = this.scale
@@ -142,8 +143,8 @@ class PyramidNode {
 
     draw(context : CanvasRenderingContext2D) {
         DrawingUtil.drawPyramidNode(context, this.i, this.state.scale)
-        if (this.next) {
-            this.next.draw(context)
+        if (this.prev) {
+            this.prev.draw(context)
         }
     }
 

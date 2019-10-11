@@ -138,6 +138,9 @@ class PyramidNode {
 
     draw(context : CanvasRenderingContext2D) {
         DrawingUtil.drawPyramidNode(context, this.i, this.state.scale)
+        if (this.next) {
+            this.next.draw(context)
+        }
     }
 
     update(cb : Function) {
@@ -181,5 +184,27 @@ class Pyramids {
 
     startUpdating(cb : Function) {
         this.curr.startUpdating(cb)
+    }
+}
+
+class Renderer {
+
+    pyramids : Pyramids = new Pyramids()
+    animator : Animator = new Animator()
+
+    render(context : CanvasRenderingContext2D) {
+        this.pyramids.draw(context)
+    }
+
+    handleTap(cb : Function) {
+        this.pyramids.startUpdating(() => {
+            this.animator.start(() => {
+                cb()
+                this.pyramids.update(() => {
+                    this.animator.stop()
+                    cb()
+                })
+            })
+        })
     }
 }

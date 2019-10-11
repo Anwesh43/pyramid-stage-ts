@@ -47,3 +47,29 @@ class ScaleUtil {
         return Math.min(1 / n, ScaleUtil.maxScale(scale, i, n)) * n
     }
 }
+
+class DrawingUtil {
+
+    static drawPyramids(context : CanvasRenderingContext2D, total : number, w : number, size : number, scale : number) {
+        const gap : number = w / (total + 1)
+        for (var j = 0; j < total; j++) {
+            const sc : number = ScaleUtil.divideScale(scale, j, total)
+            const updatedSize : number = size * sc
+            context.save()
+            context.translate(gap * (j + 1), 0)
+            context.rotate(Math.PI / 2 * sc)
+            context.fillRect(-updatedSize, -updatedSize, 2 * updatedSize, 2 * updatedSize)
+            context.restore()
+        }
+    }
+
+    static drawPyramidNode(context : CanvasRenderingContext2D, i : number, scale : number) {
+        const gap : number = h / (nodes + 1)
+        const size : number = gap / sizeFactor
+        context.fillStyle = foreColor
+        context.save()
+        context.translate(0, h * (i + 1))
+        DrawingUtil.drawPyramids(context, i, w, size, scale)
+        context.restore()
+    }
+}
